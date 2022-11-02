@@ -20,5 +20,6 @@
 ### OCR
 ## Inference
 ### Text detection
+- `python3 tools/infer_text_detection.py`
 ### OCR
 ### Information extraction
