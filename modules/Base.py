@@ -5,6 +5,9 @@ class Base(ABC):
         pass
     
     @abstractmethod
-    def __call__(self, *args, **kwds):
+    def __call__(self, input, *args, **kwds):
+        """
+        input: Should be BGR image with shape (h, w, 3)
+        """
         pass
     
