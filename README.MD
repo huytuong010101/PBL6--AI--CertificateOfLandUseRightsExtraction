@@ -32,3 +32,4 @@
 ### OCR
 - `python3 tools/infer_text_recoginition.py`
 ### Information extraction
+- `python3 tools/infer_information_extraction.py`
