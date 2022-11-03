@@ -23,3 +23,4 @@
 - `python3 tools/infer_text_detection.py`
 ### OCR
 ### Information extraction
+- `python3 tools/infer_information_extraction.py`
