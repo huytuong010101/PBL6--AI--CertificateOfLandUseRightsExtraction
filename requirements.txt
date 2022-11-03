@@ -1,3 +1,7 @@
 paddlepaddle
 paddleocr
 opencv-python
+vietocr
+torch
+torchvision
+matplotlib
