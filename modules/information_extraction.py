@@ -46,12 +46,23 @@ class InformationExtraction(Base):
         return data
 
     def front_extract(self, content):
+        data = {}
+
         regex = r"I. [^\n]+"
         content = content[re.search(regex, content).end() + 1:]
         content = "\n".join(content.splitlines()[:-1])
+        # Get the name if exception
+        name = ""
+        lines = content.splitlines()
+        while ":" not in lines[0]:
+            name = name + lines[0]
+            del lines[0]
+        if name:
+            data["Chủ sở hữu"] = name
+        # ===
         regex = r"""[^\n,.?:"\{\}\+_\)(*&^%$#@!~<>/;'\[\]]+:"""
         matches = list(re.finditer(regex, content))
-        data = {}
+        
         for i in range(len(matches)):
             infor = content[matches[i].start(): matches[i+1].start() if i+1 < len(matches) else 10000]
             key, value = infor.split(":")
@@ -67,10 +78,10 @@ class InformationExtraction(Base):
         data = {}
         if front is not None:
             front_data = self.front_extract(front)
-            data["front"] = front_data
+            data["Thông tin về chủ sở hữu"] = front_data
         if inner_left is not None:
             inner_left_data = self.inner_left_extract(inner_left)
-            data["inner_left"] = inner_left_data
+            data["Thửa đất, nhà ở và tài sản khác gắn liền với đất"] = inner_left_data
 
         if is_debug:
             print(json.dumps(data, indent=4, ensure_ascii=False))
