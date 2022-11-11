@@ -2,7 +2,7 @@ import sys
 if "../" not in sys.path:
     sys.path.append("../")
 from modules.Base import Base
-from config import text_recognition_config_yml_path, text_recognition_weights_path
+from config import text_recognition_config_yml_path, text_recognition_weights_path, path_dest_gdown
 from vietocr.tool.config import Cfg
 from vietocr.tool.predictor import Predictor
 import gdown
@@ -12,8 +12,12 @@ os.environ["CUDA_LAUNCH_BLOCKING"] = "1"
 
 class TextRecognition(Base):
     def __init__(self, model_name='vgg_transformer', device="cpu", get_config_yml=False):
+        if not os.path.exists(path_dest_gdown):
+            os.makedirs(path_dest_gdown)
+
         if not os.path.exists(text_recognition_weights_path):
             self.get_weights_from_gdrive()
+
         if not os.path.exists(text_recognition_config_yml_path) and get_config_yml == True:
             self.get_config_yml_from_gdrive()
             config = Cfg.load_config_from_file(text_recognition_config_yml_path)

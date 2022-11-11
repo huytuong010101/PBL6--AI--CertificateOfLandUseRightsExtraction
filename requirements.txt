@@ -5,3 +5,7 @@ vietocr
 torch
 torchvision
 matplotlib
+fastapi
+uvicorn
+python-multipart
+PyYAML

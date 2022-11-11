@@ -29,7 +29,24 @@
 ## Inference
 ### Text detection
 - `python3 tools/infer_text_detection.py`
+
 ### OCR
 - `python3 tools/infer_text_recoginition.py`
+
 ### Information extraction
 - `python3 tools/infer_information_extraction.py`
+
+### Information extraction
+- `python3 tools/infer_information_extraction.py`
+
+### Installation
+```
+   python3.8 -m venv venv
+   . venv/bin/activate
+   pip install -r requirements.txt
+ ```
+
+### APIs
+```
+   uvicorn main:app --reload
+```
