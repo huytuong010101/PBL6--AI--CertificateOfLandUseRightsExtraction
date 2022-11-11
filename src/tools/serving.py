@@ -13,7 +13,7 @@ async def file2opencv(file):
     return img
 
 app = FastAPI()
-pipeline = FullPipeline(reconition_device="cuda:0")
+pipeline = FullPipeline()
 
 app.add_middleware(
     CORSMiddleware,
@@ -38,4 +38,4 @@ async def extract_info(
     return data
     
 if __name__ == "__main__":
-    uvicorn.run(app, port=8000)
+    uvicorn.run(app, port=8000, host="0.0.0.0")

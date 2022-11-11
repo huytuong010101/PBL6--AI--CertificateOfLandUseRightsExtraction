@@ -33,3 +33,6 @@
 - `python3 tools/infer_text_recoginition.py`
 ### Information extraction
 - `python3 tools/infer_information_extraction.py`
+
+## Start serving API
+- `python3 tools/serving.py`

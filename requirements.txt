@@ -2,6 +2,7 @@ paddlepaddle
 paddleocr
 opencv-python
 vietocr
-torch
-torchvision
 matplotlib
+uvicorn==0.18.2
+python-multipart==0.0.5
+fastapi==0.78.0
