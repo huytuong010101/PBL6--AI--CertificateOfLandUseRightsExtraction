@@ -13,12 +13,15 @@ class TextDetection(Base):
         paddle.set_device(device)
         self.detector = PaddleOCR(lang='en')
 
-    def __call__(self, image: np.ndarray):
+    def __call__(self, image: np.ndarray, line_group=True):
         # Detection
         result = self.detector.ocr(image,rec=False)
         # Line link
         bboxes = np.array(result[0], dtype=int)
-        lines_bbox = self.line_group(bboxes)
+        if line_group:
+            lines_bbox = self.line_group(bboxes)
+        else:
+            lines_bbox = [[bbox] for bbox in bboxes]
         # sort line top to bottom
         lines_bbox = TextDetection.sort_lines_bbox(lines_bbox)
         # bbox to image

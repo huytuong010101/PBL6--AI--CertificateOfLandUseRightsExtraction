@@ -1,5 +1,5 @@
-# Xây dụng module trích xuất thông tin từ sổ đỏ
-## Cấu trúc thư mục
+# Building module to extract information from Land Registration
+## Project tree
 ```
 .
 ├── config                  # Contain all configuration for training or testing
@@ -13,8 +13,16 @@
 ```
 ## Training
 ### OCR
-- Config ...
-- Create anotation: ...
+- Config
+ + Config the path where downloaded files are located in config/production_config.py
+ + Example:
+ ```
+    # Path to config.yml file 
+    text_recognition_config_yml_path = '/home/hanlhn/Downloads/config.yml'
+    # Path to weights file
+    text_recognition_weights_path = '/home/hanlhn/Downloads/transformerocr.pth'
+ ```
+- Create annotation: ...
 - Training: `python3 ...`
 ## Evaluate
 ### OCR
@@ -22,4 +30,9 @@
 ### Text detection
 - `python3 tools/infer_text_detection.py`
 ### OCR
+- `python3 tools/infer_text_recoginition.py`
 ### Information extraction
+- `python3 tools/infer_information_extraction.py`
+
+## Start serving API
+- `python3 tools/serving.py`
