@@ -34,11 +34,11 @@ class InformationExtraction(Base):
             
             # Extraction infor
             subdata = {}
-            regex = r"""[^\n,.?:"\{\}\+_(*&^%$#@!~<>/;'\[\]]+:"""
+            regex = r"""[^1234567890\n,.?:"\{\}\+_*&^%$#@!~<>/;'\[\]]+:"""
             submatches = list(re.finditer(regex, section))
             for j in range(len(submatches)):
                 infor = section[submatches[j].start():submatches[j+1].start() if j +1 < len(submatches) else 10000]
-                key, value = infor.split(":")
+                key, value = infor.split(":")[0], ":".join(infor.split(":")[1:]) 
                 subdata[key.strip()] = value.strip().replace("\n", " ")
             if not subdata or "ghi chú" in title.lower(): # TODO: fix hardcode here
                 subdata = section.strip()
