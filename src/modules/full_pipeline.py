@@ -4,6 +4,8 @@ from modules.information_extraction import InformationExtraction
 from PIL import Image 
 import cv2
 import numpy as np
+from tqdm import tqdm
+import base64
 
 class FullPipeline:    
     def __init__(self, detector_device="cpu", reconition_device="cpu"):
@@ -13,25 +15,26 @@ class FullPipeline:
     
     def __call__(self, front_image, inner_left_image, inner_right_image, back_image):
         front_text, inner_left_text, inner_right_text = "", "", ""
+        land_image = None
             
         if front_image is not None:
             print(">> Process on front")
-            for i, line in enumerate(self.detector(front_image)):
+            for line in tqdm(self.detector(front_image)):
                 line_text = ""
                 for bbox, image in line:
                     text, confidence = self.recognizer(Image.fromarray(image))
                     line_text = line_text + text
-                print(">>", line_text)
+                # print(">>", line_text)
                 front_text = front_text + line_text + "\n"
                 
         if inner_left_image is not None:
             print(">> Process on inner left")
-            for i, line in enumerate(self.detector(inner_left_image)):
+            for line in tqdm(self.detector(inner_left_image)):
                 line_text = ""
                 for bbox, image in line:
                     text, confidence = self.recognizer(Image.fromarray(image))
                     line_text = line_text + text
-                print(">>", line_text)
+                # print(">>", line_text)
                 inner_left_text = inner_left_text + line_text + "\n"   
                 
         if inner_right_image is not None:
@@ -39,7 +42,7 @@ class FullPipeline:
             y1_graph, y2_graph = 0, -1
             x_col1 = None
             x_col2 = None
-            for i, line in enumerate(self.detector(inner_right_image, False)):
+            for line in tqdm(self.detector(inner_right_image, False)):
                 bbox, image = line[0]
                 line_text, confidence = self.recognizer(Image.fromarray(image))
                 # Find some fix location
@@ -56,13 +59,13 @@ class FullPipeline:
                     y = np.mean(bbox[:, 0])
                     if abs(y - x_col1) < abs(y - x_col2):
                         inner_right_text = inner_right_text + line_text + "\n"
-            cv2.imwrite("samples/tmp.jpg", inner_right_image[y1_graph:y2_graph,:,:])
+            land_image = inner_right_image[y1_graph:y2_graph,:,:]
             
         if back_image is not None:
             print(">> Process on back")
             x_col1 = None
             x_col2 = None
-            for i, line in enumerate(self.detector(back_image, False)):
+            for line in tqdm(self.detector(back_image, False)):
                 bbox, image = line[0]
                 line_text, confidence = self.recognizer(Image.fromarray(image))
                 # Find some fix location
@@ -80,4 +83,8 @@ class FullPipeline:
             
         data = self.extractor(front=front_text, inner_left=inner_left_text, is_debug=False)
         data["Những thay đổi sau khi cấp giấy chứng nhận"] = {"Nội dung thay đổi": inner_right_text}
+        if land_image is not None:
+            _, buffer = cv2.imencode('.jpg', land_image)
+            jpg_as_text = base64.b64encode(buffer)
+            data["land_image"] = jpg_as_text
         return data

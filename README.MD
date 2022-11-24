@@ -26,6 +26,14 @@
 - Training: `python3 ...`
 ## Evaluate
 ### OCR
+## Start training VietOCR
+```python3 tools/train_ocr.py <your_dataset_path>
+   # Example: python3 tools/train_ocr.py "/home/hanlhn/Downloads/dataset-20221118T073324Z-001/dataset/"
+```
+## Start evaluating VietOCR
+```python3 tools/eval_ocr.py <your_dataset_path>
+   # Example: python3 tools/train_ocr.py "/home/hanlhn/Downloads/dataset-20221118T073324Z-001/dataset/"
+```
 ## Inference
 ### Text detection
 - `python3 tools/infer_text_detection.py`
@@ -36,3 +44,4 @@
 
 ## Start serving API
 - `python3 tools/serving.py`
+
