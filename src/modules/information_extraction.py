@@ -48,8 +48,14 @@ class InformationExtraction(Base):
     def front_extract(self, content):
         data = {}
 
-        regex = r"I. [^\n]+"
-        content = content[re.search(regex, content).end() + 1:]
+        regex = r"[I]. [^\n]+"
+        match = re.search(regex, content)
+        if match is None:
+            regex = r". người sử dụng[^\n]+"
+            match = re.search(regex, content.lower()) 
+        if match is None:
+            return data
+        content = content[match.end() + 1:]
         content = "\n".join(content.splitlines()[:-1])
         # Get the name if exception
         name = ""
@@ -77,11 +83,20 @@ class InformationExtraction(Base):
                  is_debug: bool=False):
         data = {}
         if front is not None:
-            front_data = self.front_extract(front)
-            data["Thông tin về chủ sở hữu"] = front_data
+            try:
+                front_data = self.front_extract(front)
+                data["Thông tin về chủ sở hữu"] = front_data
+            except Exception as e:
+                print(front)
+                print(e)
+
         if inner_left is not None:
-            inner_left_data = self.inner_left_extract(inner_left)
-            data["Thửa đất, nhà ở và tài sản khác gắn liền với đất"] = inner_left_data
+            try:
+                inner_left_data = self.inner_left_extract(inner_left)
+                data["Thửa đất, nhà ở và tài sản khác gắn liền với đất"] = inner_left_data
+            except Exception as e:
+                print(inner_left)
+                print(e)
 
         if is_debug:
             print(json.dumps(data, indent=4, ensure_ascii=False))
